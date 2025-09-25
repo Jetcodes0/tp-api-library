@@ -1,33 +1,41 @@
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 
-let adminRight = [];
-let userRight = [];
-
 export function expressAuthentication(
     request: express.Request,
     securityName: string,
     scopes?: string[]
 ): Promise<any> {
-    if (securityName === "jwt") {
-        const token = request.headers["authorization"];
-
-        return new Promise((resolve, reject) => {
-            if (!token) {
-                reject(new Error("No token provided"));
-            } else {
-
-                jwt.verify(token, "your_secret_key",
-                    function (erreur, decoded) {
-                        if (scopes !== undefined) {
-                            // Gestion des droits
-                        }
-                        resolve(decoded);
-                    }
-                );
-            }
-        });
-    } else {
+    if (securityName !== "jwt") {
         throw new Error("Only support JWT authentication");
     }
+
+    const authHeader = request.headers["authorization"];
+    if (!authHeader) {
+        return Promise.reject(new Error("No token provided"));
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded: any) => {
+            if (err) return reject(new Error("Invalid token"));
+
+            console.log(scopes)
+            if (scopes && scopes.length > 0) {
+                const userRights: string[] = decoded.rights || [];
+
+                console.log("User rights:", userRights);
+                console.log("Required scopes:", scopes);
+
+                const hasAllScopes = scopes.every(scope => userRights.includes(scope));
+                if (!hasAllScopes) {
+                    return reject(new Error("Insufficient permissions"));
+                }
+            }
+
+            
+            resolve(decoded);
+        });
+    });
 }

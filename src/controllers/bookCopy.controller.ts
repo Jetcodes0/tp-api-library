@@ -6,7 +6,6 @@ import {BookCopy} from "../models/bookCopy.model";
 
 @Route("book-copies")
 @Tags("Book-copies")
-@Security("jwt")
 export class BookCopyController extends Controller {
     @Get("/")
     public async getAllBookCopys(): Promise<BookCopyDTO[]> {
@@ -56,6 +55,7 @@ export class BookCopyController extends Controller {
 
     // Supprime une copie de livre par ID
     @Delete("{id}")
+    @Security("jwt",["delete:BookCopy"])
     public async deleteBookCopy(@Path() id: number): Promise<void> {
         await bookCopyService.deleteBookCopy(id);
     }
