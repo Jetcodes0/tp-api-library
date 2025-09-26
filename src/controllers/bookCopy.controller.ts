@@ -6,14 +6,17 @@ import {BookCopy} from "../models/bookCopy.model";
 
 @Route("book-copies")
 @Tags("Book-copies")
+@Security("jwt") // tous doivent être authentifiés
 export class BookCopyController extends Controller {
     @Get("/")
+    @Security("jwt", ["read"])
     public async getAllBookCopys(): Promise<BookCopyDTO[]> {
         return bookCopyService.getAllBookCopys();
     }
 
     // Récupère une copie de livre par ID
     @Get("/{id}")
+    @Security("jwt", ["read"])
     public async getBookCopyById(@Path() id: number): Promise<BookCopyDTO | null> {
         const bookCopy: BookCopy | null = await bookCopyService.getBookCopyById(id);
         if (!bookCopy) {
@@ -26,6 +29,7 @@ export class BookCopyController extends Controller {
 
     // Crée une nouvelle copie de livre
     @Post("/")
+    @Security("jwt", ["write:BookCopy"]) // gerant + admin
     public async createBookCopy(
         @Body() requestBody: BookCopyDTO
     ): Promise<BookCopyDTO> {
@@ -39,6 +43,7 @@ export class BookCopyController extends Controller {
 
     // Met à jour une copie de livre par ID
     @Patch("{id}")
+    @Security("jwt", ["update:BookCopy"]) // gerant + admin
     public async updateBookCopy(
         @Path() id: number,
         @Body() requestBody: BookCopyDTO
@@ -55,7 +60,7 @@ export class BookCopyController extends Controller {
 
     // Supprime une copie de livre par ID
     @Delete("{id}")
-    @Security("jwt",["delete:BookCopy"])
+    @Security("jwt", ["delete:BookCopy"]) // gerant + admin
     public async deleteBookCopy(@Path() id: number): Promise<void> {
         await bookCopyService.deleteBookCopy(id);
     }

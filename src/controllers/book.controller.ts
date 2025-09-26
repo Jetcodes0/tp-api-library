@@ -8,15 +8,17 @@ import {bookCopyService} from "../services/bookCopy.service";
 
 @Route("books")
 @Tags("Books")
-@Security("jwt")
+@Security("jwt") // tout le monde doit être authentifié
 export class BookController extends Controller {
     @Get("/")
+    @Security("jwt", ["read"])
     public async getAllBooks(): Promise<BookDTO[]> {
         return bookService.getAllBooks();
     }
 
     // Récupère un livre par ID
     @Get("/{id}")
+    @Security("jwt", ["read"])
     public async getBookById(@Path() id: number): Promise<BookDTO | null> {
         const book: Book | null = await bookService.getBookById(id);
         if (!book) {
@@ -29,6 +31,7 @@ export class BookController extends Controller {
 
     // Crée un nouveau livre
     @Post("/")
+    @Security("jwt", ["write:Book"]) // user + gerant + admin
     public async createBook(
         @Body() requestBody: BookDTO
     ): Promise<BookDTO> {
@@ -43,6 +46,7 @@ export class BookController extends Controller {
 
     // Met à jour un livre par ID
     @Patch("{id}")
+    @Security("jwt", ["update:Book"]) // gerant + admin
     public async updateBook(
         @Path() id: number,
         @Body() requestBody: BookDTO
@@ -59,12 +63,14 @@ export class BookController extends Controller {
 
     // Supprime un livre par ID
     @Delete("{id}")
+    @Security("jwt", ["delete:Book"]) // seulement admin
     public async deleteBook(@Path() id: number): Promise<void> {
         await bookService.deleteBook(id);
     }
 
     // Récupère les copies d'un livre par ID
     @Get("/{id}/bookCopys")
+    @Security("jwt", ["read"])
     public async getBookBookCopysById(@Path() id: number): Promise<BookCopyDTO[] | null> {
         const book: Book | null = await bookService.getBookById(id);
         if (!book) {

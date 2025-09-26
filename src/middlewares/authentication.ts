@@ -14,8 +14,8 @@ export function expressAuthentication(
     if (!authHeader) {
         return Promise.reject(new Error("No token provided"));
     }
-
-    const token = authHeader.split(" ")[1];
+    const authHeadSplit = authHeader.split(" ")
+    const token = authHeadSplit.length === 2 ? authHeadSplit[1] : authHeader;
 
     return new Promise((resolve, reject) => {
         jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded: any) => {

@@ -8,16 +8,18 @@ import {BookDTO} from "../dto/book.dto";
 
 @Route("authors")
 @Tags("Authors")
-@Security("jwt")
+@Security("jwt") // sécurité globale -> tous doivent être authentifiés
 export class AuthorController extends Controller {
     // Récupère tous les auteurs
     @Get("/")
+    @Security("jwt", ["read"])
     public async getAllAuthors(): Promise<AuthorDTO[]> {
         return authorService.getAllAuthors();
     }
 
     // Récupère un auteur par ID
     @Get("{id}")
+    @Security("jwt", ["read"])
     public async getAuthorById(@Path() id: number): Promise<AuthorDTO | null> {
         const author: Author | null = await authorService.getAuthorById(id);
         if (!author) {
@@ -30,6 +32,7 @@ export class AuthorController extends Controller {
 
     // Crée un nouvel auteur
     @Post("/")
+    @Security("jwt", ["write:Author"])
     public async createAuthor(
         @Body() requestBody: AuthorDTO
     ): Promise<AuthorDTO> {
@@ -39,12 +42,14 @@ export class AuthorController extends Controller {
 
     // Supprime un auteur par ID
     @Delete("{id}")
+    @Security("jwt", ["delete:Author"]) // réservé admin
     public async deleteAuthor(@Path() id: number): Promise<void> {
         await authorService.deleteAuthor(id);
     }
 
     // Met à jour un auteur par ID
     @Patch("{id}")
+    @Security("jwt", ["update:Author"])
     public async updateAuthor(
         @Path() id: number,
         @Body() requestBody: AuthorDTO
@@ -61,6 +66,7 @@ export class AuthorController extends Controller {
 
     // Récupère les livres de l'auteur par ID
     @Get("{id}/books")
+    @Security("jwt", ["read"])
     public async getAuthorBooksById(@Path() id: number): Promise<BookDTO[] | null> {
         let author: Author | null = await authorService.getAuthorById(id);
         if (!author) {

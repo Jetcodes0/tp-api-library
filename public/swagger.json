@@ -144,7 +144,13 @@
 				"tags": [
 					"Book-copies"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"read"
+						]
+					}
+				],
 				"parameters": []
 			},
 			"post": {
@@ -164,7 +170,13 @@
 				"tags": [
 					"Book-copies"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"write:BookCopy"
+						]
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -201,7 +213,13 @@
 				"tags": [
 					"Book-copies"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"read"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -236,7 +254,13 @@
 				"tags": [
 					"Book-copies"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": [
+							"update:BookCopy"
+						]
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -312,7 +336,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"read"
+						]
 					}
 				],
 				"parameters": []
@@ -336,7 +362,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"write:Book"
+						]
 					}
 				],
 				"parameters": [],
@@ -377,7 +405,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"read"
+						]
 					}
 				],
 				"parameters": [
@@ -416,7 +446,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"update:Book"
+						]
 					}
 				],
 				"parameters": [
@@ -453,7 +485,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"delete:Book"
+						]
 					}
 				],
 				"parameters": [
@@ -493,7 +527,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"read"
+						]
 					}
 				],
 				"parameters": [
@@ -532,7 +568,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"read"
+						]
 					}
 				],
 				"parameters": []
@@ -556,7 +594,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"write:Author"
+						]
 					}
 				],
 				"parameters": [],
@@ -597,7 +637,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"read"
+						]
 					}
 				],
 				"parameters": [
@@ -624,7 +666,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"delete:Author"
+						]
 					}
 				],
 				"parameters": [
@@ -663,7 +707,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"update:Author"
+						]
 					}
 				],
 				"parameters": [
@@ -713,7 +759,9 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"jwt": [
+							"read"
+						]
 					}
 				],
 				"parameters": [

@@ -15,18 +15,32 @@ export class AuthenticationService {
         
         let rights: string[] = [];
         switch (username) {
-            case "admin":
-                rights = ["admin", "read", "write", "update", "delete"];
-                break;
-            case "gerant":
-                rights = ["read", "write", "update", "delete:BookCopy"];
-                break;
-            case "user":
-                rights = ["read", "write:Book"];
-                break;
-            default:
-                rights = []; 
-        }
+    case "admin":
+        rights = [
+            "read",
+            "write:Author", "update:Author", "delete:Author",
+            "write:Book", "update:Book", "delete:Book",
+            "write:BookCopy", "update:BookCopy", "delete:BookCopy"
+        ];
+        break;
+    case "gerant":
+        rights = [
+            "read",
+            "write:Author", "update:Author",
+            "write:Book", "update:Book",
+            "write:BookCopy", "update:BookCopy", "delete:BookCopy"
+        ];
+        break;
+    case "user":
+        rights = [
+            "read",
+            "write:Book" 
+        ];
+        break;
+    default:
+        rights = [];
+}
+
 
         return jwt.sign(
             { username, rights },
